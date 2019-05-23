@@ -2,7 +2,8 @@ var db = require('../db');
 
 exports.insert = function InsertHandler(birthDate, firstName, lastName, gender, phone, done){
     //var values = [new Date(birthDate).toISOString(), firstName, lastName, gender, phone];
-    var values = [birthDate, firstName, lastName, gender, phone];
+    var values = [new Date(birthDate).toISOString().slice(0, 19).replace('T', ' '), firstName, lastName, gender, phone];
+    //var values = [birthDate, firstName, lastName, gender, phone];
     db.get().query(
         'INSERT INTO friends (birth_date, first_name, last_name, gender, phone) ' +
         'VALUES (?,?,?,?,?)', values, function InsertQueryHandler(err, result){
