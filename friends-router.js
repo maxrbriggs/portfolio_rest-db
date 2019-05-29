@@ -34,4 +34,7 @@ router.get('/friends', function FriendsGetHandler(request, response){
     });
 });
 
+router.put('/friends', function FriendsPutHandler(request, response){
+	friendModel.
+
 module.exports = router;

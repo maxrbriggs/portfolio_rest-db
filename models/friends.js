@@ -22,7 +22,7 @@ exports.getAll = function GetAllHandler(done){
 
 exports.findById = function FindByIdHandler(id, done){
     db.get().query(
-        'SELECT * FROM friends WHERE friend_id = ?', id, 
+        'SELECT * FROM friends WHERE friend_id = ?', id,
         function SelectQueryHandler(err, result, fields){
             if (err)
                 return done(err);
@@ -32,10 +32,23 @@ exports.findById = function FindByIdHandler(id, done){
 
 exports.findByName = function FindByNameHandler(name, done){
     db.get().query(
-        'SELECT * FROM friends WHERE first_name = ?', id, 
+        'SELECT * FROM friends WHERE first_name = ?', id,
         function SelectQueryHandler(err, result, fields){
             if (err)
                 return done(err);
             done(null, result, fields);
         });
 }
+
+exports.update = function UpdateHandler(id, done){
+	db.get().query(
+		(
+exports.delete = function DeleteHandler(id, done){
+	db.get().query(
+		'DELETE FROM friends WHERE friend_id = ?', id, function SelectQueryHandler(err, result, fields){
+			if (err)
+				return done(err);
+			done(null, result, fields);
+		});
+}
+
