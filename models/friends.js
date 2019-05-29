@@ -40,15 +40,21 @@ exports.findByName = function FindByNameHandler(name, done){
         });
 }
 
-exports.update = function UpdateHandler(id, done){
+exports.update = function UpdateHandler(id, birth_date, first_name, last_name, gender, phone, done){
 	db.get().query(
-		(
-exports.delete = function DeleteHandler(id, done){
-	db.get().query(
-		'DELETE FROM friends WHERE friend_id = ?', id, function SelectQueryHandler(err, result, fields){
+		'UPDATE friends SET birth_date = ?, first_name = ?, last_name = ?, gender = ?, phone = ? WHERE friend_id = ?', birth_date, first_name, last_name, gender, phone, id, function UpdateQueryHandler(err, result){
 			if (err)
 				return done(err);
-			done(null, result, fields);
+			done(null, result.affectedRows);
+		});
+}
+
+exports.delete = function DeleteHandler(id, done){
+	db.get().query(
+		'DELETE FROM friends WHERE friend_id = ?', id, function DeleteQueryHandler(err, result){
+			if (err)
+				return done(err);
+			done(null, result.affectedRows);
 		});
 }
 

@@ -35,6 +35,29 @@ router.get('/friends', function FriendsGetHandler(request, response){
 });
 
 router.put('/friends', function FriendsPutHandler(request, response){
-	friendModel.
+	friendModel.update(function DoneUpdating(err, result){
+		if (err) {
+			console.log("Some error updating");
+			console.log(err);
+			response.write("Error Updating");
+		} else {
+			console.log("Successfully updated records");
+			response.json(result);
+		}
+	});
+});
+
+router.delete('/friends', function FriendsDeleteHandler(request, response){
+	friendModel.delete(function DoneDeleting(err, result){
+		if (err) {
+			console.log("Some error deleting");
+			console.log(err);
+			response.write("Error Deleting");
+		} else {
+			console.log("Successfully deleted records");
+			response.json(result);
+		}
+	});
+});
 
 module.exports = router;
