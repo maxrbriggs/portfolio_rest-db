@@ -3,22 +3,30 @@ var router = express.Router();          // Router object for routes
 
 var friendModel = require('./models/friends');
 
+// Need to figure out why is loading when site home page is requested
+router.get('/api', function HomePageHandler(request, response) {
+	response.sendFile("/" + "index.html");
+	//response.sendFile(__dirname + "/" + "index.html");
+});
 
 
-router.post('/friends', function FriendsPostHandler(request, response){
-    friendModel.insert( request.body.birthDate,
-                        request.body.firstName,
-                        request.body.lastName,
-                        request.body.gender,
-                        request.body.phone, function DoneInserting(err, resultId){
-                            if (err){
-                                console.log("Some error inserting");
-                                console.log(err);
-                                response.write("Error Inserting");
-                            }else{
-                                response.json({ insertedId: resultId });
-                            }
-                        } );
+router.post('/friends',
+    function FriendsPostHandler(request, response){
+        friendModel.insert(
+            request.body.birthDate,
+            request.body.firstName,
+            request.body.lastName,
+            request.body.gender,
+            request.body.phone,
+            function DoneInserting(err, resultId){
+                if (err){
+                    console.log("Some error inserting");
+                    console.log(err);
+                    response.write("Error Inserting");
+                }else{
+                    response.json({ insertedId: resultId });
+                }
+            } );
 });
 
 router.get('/friends', function FriendsGetHandler(request, response){
@@ -34,30 +42,29 @@ router.get('/friends', function FriendsGetHandler(request, response){
     });
 });
 
-router.put('/friends', function FriendsPutHandler(request, response){
-	friendModel.update(function DoneUpdating(err, result){
-		if (err) {
-			console.log("Some error updating");
-			console.log(err);
-			response.write("Error Updating");
-		} else {
-			console.log("Successfully updated records");
-			response.json(result);
-		}
-	});
+router.get('/:id', function FriendsGetByIdHandler(request, response){
+    friendModel.findById(request.params.id, function DoneGettingById(err, result, fields){
+        if (err){
+            console.log("Some error finding by id");
+            console.log(err);
+            response.write("Error finding by id");
+        }else {
+            response.json(result);
+        }
+    });
 });
 
-router.delete('/friends', function FriendsDeleteHandler(request, response){
-	friendModel.delete(function DoneDeleting(err, result){
-		if (err) {
-			console.log("Some error deleting");
-			console.log(err);
-			response.write("Error Deleting");
+router.get('/friends/:name', function FriendsGetByNameHandler(request, response){
+    friendModel.findByName(request.params.name, function DoneGettingByName(err, result, fields){
+        if (err){
+            console.log("Some error finding by name");
+            console.log(err);
+            response.write("Error finding by name");
 		} else {
-			console.log("Successfully deleted records");
 			response.json(result);
 		}
-	});
+    });
 });
+
 
 module.exports = router;
